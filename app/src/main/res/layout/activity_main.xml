@@ -13,7 +13,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="0dp"
-        tools:listitem="@layout/recycler_watch_item"/>
+        tools:listitem="@layout/recycler_watch_item"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <LinearLayout
         android:id="@+id/linear_layout"
@@ -27,7 +28,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <EditText
-            android:id="@+id/editTextNumberSigned2"
+            android:id="@+id/timeToSetEditText"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -35,7 +36,7 @@
             android:inputType="numberSigned" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonAdd"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

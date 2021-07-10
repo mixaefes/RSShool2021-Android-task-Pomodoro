@@ -2,17 +2,16 @@ package com.example.pomodoroefes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.example.pomodoroefes.databinding.RecyclerWatchItemBinding
 
-class StopwatchAdapter: ListAdapter<StopWatch, StopWatchViewHolder>(itemComparator) {
+class StopwatchAdapter(private val listener: StopwatchListener): ListAdapter<StopWatch,StopWatchViewHolder>(itemComparator) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StopWatchViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = RecyclerWatchItemBinding.inflate(layoutInflater, parent, false)
-        return StopWatchViewHolder(binding)
+        return StopWatchViewHolder(binding,listener,binding.root.resources)
     }
 
     override fun onBindViewHolder(holder: StopWatchViewHolder, position: Int) {
@@ -33,4 +32,5 @@ class StopwatchAdapter: ListAdapter<StopWatch, StopWatchViewHolder>(itemComparat
             }
         }
     }
+
 }
