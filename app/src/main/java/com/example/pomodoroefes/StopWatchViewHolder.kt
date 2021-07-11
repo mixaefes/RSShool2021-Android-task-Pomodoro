@@ -56,6 +56,7 @@ class StopWatchViewHolder(
         timer = getCountDownTimer(stopWatch)
         timer?.start()
 
+
         binding.blinkingView.isInvisible = false
         (binding.blinkingView.background as? AnimationDrawable)?.start()
     }
@@ -66,11 +67,17 @@ class StopWatchViewHolder(
 
             override fun onTick(millisUntilFinished: Long) {
                 stopWatch.currentMs -= interval
+                //custom view
+                //set custom view
+                binding.customViewTimer.setPeriod(PERIOD1)
+                binding.customViewTimer.setCurrent(stopWatch.currentMs)
+                //
                 binding.timerText.text = stopWatch.currentMs.displayTime()
             }
 
             override fun onFinish() {
                 binding.timerText.text = stopWatch.currentMs.displayTime()
+
             }
 
         }
@@ -101,6 +108,8 @@ class StopWatchViewHolder(
         private const val START_TIME = "00:00:00"
         private const val UNIT_TEN_MS = 1000L
         private const val PERIOD  = 1000L * 60L * 60L * 24L // Day
+        private const val PERIOD1  = 1000L * 60L// Minute
+
     }
 }
 

@@ -44,6 +44,7 @@ class CustomView @JvmOverloads constructor(
         if (periodMs == 0L || currentMs == 0L) return
         val startAngel = (((currentMs % periodMs).toFloat() / periodMs) * 360)
 
+
         canvas.drawArc(
             0f,
             0f,

@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(),StopwatchListener{
         }
         binding.timeToSetEditText.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                TODO("Not yet implemented")
+                Log.i("MainActivity", "onTextChanged is called")
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(),StopwatchListener{
             }
 
             override fun afterTextChanged(s: Editable?) {
-                TODO("Not yet implemented")
+                Log.i("MainActivity", "onTextChanged is called")
             }
 
 
