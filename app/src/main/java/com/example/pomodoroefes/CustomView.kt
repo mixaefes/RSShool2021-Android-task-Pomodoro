@@ -31,11 +31,11 @@ class CustomView @JvmOverloads constructor(
                 0
             )
             color = styledAttrs.getColor(R.styleable.CustomView_custom_color, Color.RED)
-            style = styledAttrs.getInt(R.styleable.CustomView_custom_style, FILL)
+            style = styledAttrs.getInt(R.styleable.CustomView_custom_style,FILL)
             styledAttrs.recycle()
         }
         paint.color = color
-        paint.style = if (style == FILL) Paint.Style.FILL else Paint.Style.STROKE
+        paint.style = if (style == FILL) Paint.Style.STROKE else Paint.Style.FILL
         paint.strokeWidth = 5F
     }
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -51,7 +51,7 @@ class CustomView @JvmOverloads constructor(
             width.toFloat(),
             height.toFloat(),
             -90f,
-            startAngel,
+            -startAngel,
             true,
             paint
         )
