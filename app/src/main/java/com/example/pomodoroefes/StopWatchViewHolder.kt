@@ -63,8 +63,6 @@ class StopWatchViewHolder(
     private fun stopTimer(stopWatch: StopWatch) {
 binding.buttonStart.text = "START"
         timer?.cancel()
-
-
         binding.blinkingView.isInvisible = true
         (binding.blinkingView.background as? AnimationDrawable)?.stop()
     }
@@ -88,7 +86,7 @@ binding.buttonStart.text = "START"
                 binding.timerText.text = stopWatch.currentMs.displayTime()
                 stopTimer(stopWatch)
                 binding.buttonStart.text = "START"
-                listener.stop(stopWatch.id,stopWatch.currentMs)
+                //listener.stop(stopWatch.id,stopWatch.currentMs)
 
             }
 
