@@ -44,11 +44,9 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
         }
         binding.timeToSetEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                Log.i("MainActivity", "onTextChanged is called")
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.i("MainActivity", "onTextChanged is called")
                 binding.buttonAdd.isEnabled = true
             }
 
@@ -60,8 +58,8 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
         })
         binding.buttonAdd.setOnClickListener {
             if (binding.timeToSetEditText.text.isNotEmpty()) {
-                val timeToSet =
-                    Integer.parseInt(binding.timeToSetEditText.text.toString()) * 1000 * 60
+                val timeToSet:Long =
+                    (Integer.parseInt(binding.timeToSetEditText.text.toString()) * 1000 * 60).toLong()
                 stopWatches.add(StopWatch(nextId++, timeToSet.toLong(), false, timeToSet.toLong(),null))
                 stopwatchAdapter.submitList(stopWatches.toList())
                 hideKeyboard(this)
@@ -83,6 +81,7 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
 
 
     override fun delete(id: Int) {
+        stopWatches.find { it.id ==id }?.timer?.cancel()
         stopWatches.remove(stopWatches.find { it.id == id })
         stopwatchAdapter.submitList(stopWatches.toList())
     }
@@ -113,7 +112,6 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
         stopwatchAdapter.submitList(newTimers)
         stopWatches.clear()
         stopWatches.addAll(newTimers)
-        Log.i("MainActivity","stopwatcheslist: $stopWatches")
     }
 
     private fun hideKeyboard(context: Context) {
@@ -127,10 +125,7 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppBackgrounded() {
-        Log.i("MainActivity","onAppBackgrounded is called")
        startTime = stopWatches.find { it.isStarted }?.currentMs ?: 0L
-        //startTime = System.currentTimeMillis()
-        Log.i("MainActivity","startTime = ${startTime.displayTime()}")
         if(startTime>0L) {
             val startIntent = Intent(this, ForegroundService::class.java)
             startIntent.putExtra(COMMAND_ID, COMMAND_START)
@@ -141,14 +136,12 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onAppForegrounded() {
-        Log.i("MainActivity","onAppForegrounded is called")
         val stopIntent = Intent(this, ForegroundService::class.java)
         stopIntent.putExtra(COMMAND_ID, COMMAND_STOP)
         startService(stopIntent)
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onAppDestroyed() {
-        Log.i("MainActivity","onAppDestroyed is called")
         val stopIntent = Intent(this, ForegroundService::class.java)
         stopIntent.putExtra(COMMAND_ID, COMMAND_STOP)
         startService(stopIntent)

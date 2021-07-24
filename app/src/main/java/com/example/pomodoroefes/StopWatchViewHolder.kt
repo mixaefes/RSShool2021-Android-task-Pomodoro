@@ -41,15 +41,8 @@ class StopWatchViewHolder(
         binding.buttonStart.setOnClickListener {
             stopWatch.timer?.cancel()
             if (stopWatch.isStarted) {
-                Log.i("StopWatchViewHolder","initbuttonlistener stop called")
-
-                //timer?.cancel()
-
-
                 listener.stop(stopWatch.id, stopWatch.currentMs)
             } else {
-
-                Log.i("StopWatchViewHolder","initbuttonlistener start called")
                 listener.start(stopWatch.id)
             }
         }
@@ -59,9 +52,6 @@ class StopWatchViewHolder(
 
     private fun startTimer(stopWatch: StopWatch) {
         binding.buttonStart.text = "STOP"
-
-        Log.i("stopwatchviewholder", "startTimer is called period = ${stopWatch.period}")
-
         stopWatch.timer?.cancel()
         stopWatch.timer = getCountDownTimer(stopWatch)
         stopWatch.timer?.start()
@@ -77,7 +67,6 @@ class StopWatchViewHolder(
         if(stopWatch.currentMs>0L) {
             binding.buttonStart.text = "START"
         }
-        //
         Log.i("StopWatchViewHolder", "$stopWatch")
 
         stopWatch.timer?.cancel()
@@ -88,24 +77,17 @@ class StopWatchViewHolder(
     }
 
     private fun getCountDownTimer(stopWatch: StopWatch): CountDownTimer? {
-        Log.i("Stopwatchviewholder", "getCountDownTimer is called")
             return object : CountDownTimer(stopWatch.currentMs, UNIT_TEN_MS) {
                 override fun onTick(millisUntilFinished: Long) {
                     Log.i("StopWatchViewHolder", "getcountdowntimer is: ${millisUntilFinished / 1000}")
                     binding.timerText.text = millisUntilFinished.displayTime()
                     stopWatch.currentMs = millisUntilFinished
-                   // Log.i("StopWatchViewHolder", "stopwatch = : ${stopWatch}")
                     binding.customViewTimer.setCurrent(millisUntilFinished)
                 }
 
                 override fun onFinish() {
-                    Log.i(
-                        "Stopwatchviewholder",
-                        "on Finish is called, currentMs = ${stopWatch.currentMs}"
-                    )
                     listener.finish(stopWatch.id)
                     binding.customViewTimer.setCurrent(0L)
-                    // binding.customViewTimer.isVisible = false
                     binding.timerText.text = stopWatch.currentMs.displayTime()
                     stopTimer(stopWatch)
                     binding.buttonStart.text = "FINISH"

@@ -10,6 +10,7 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:transcriptMode="alwaysScroll"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="0dp"
@@ -32,6 +33,7 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:maxLength="4"
             android:hint="@string/hint_edittext"
             android:ems="10"
             android:inputType="numberSigned" />
