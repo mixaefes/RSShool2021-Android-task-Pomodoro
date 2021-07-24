@@ -8,12 +8,14 @@ import androidx.lifecycle.ProcessLifecycleOwner
 */
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
             if (binding.timeToSetEditText.text.isNotEmpty()) {
                 val timeToSet =
                     Integer.parseInt(binding.timeToSetEditText.text.toString()) * 1000 * 60
-                stopWatches.add(StopWatch(nextId++, timeToSet.toLong(), false, timeToSet.toLong()))
+                stopWatches.add(StopWatch(nextId++, timeToSet.toLong(), false, timeToSet.toLong(),null))
                 stopwatchAdapter.submitList(stopWatches.toList())
                 hideKeyboard(this)
                 binding.timeToSetEditText.text.clear()
@@ -92,11 +94,13 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
     private fun changeStopwatch(id: Int, currentMs: Long?, isStarted: Boolean) {
         val newTimers = mutableListOf<StopWatch>()
         stopWatches.forEach {
-            if(it.isStarted){
-                newTimers.add(StopWatch(it.id,currentMs?:it.currentMs,false,it.period))
+            if(it.id == id){
+                newTimers.add(StopWatch(it.id,currentMs?:it.currentMs,isStarted,it.period,it.timer))
             }
-            else if (it.id == id) {
-                newTimers.add(StopWatch(it.id, currentMs ?: it.currentMs, isStarted, it.period))
+            else if (it.isStarted) {
+                it.timer?.cancel()
+                newTimers.add(StopWatch(it.id, currentMs ?: it.currentMs, false, it.period,it.timer))
+
             } else {
                 newTimers.add(it)
             }
@@ -104,6 +108,7 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
         stopwatchAdapter.submitList(newTimers)
         stopWatches.clear()
         stopWatches.addAll(newTimers)
+        Log.i("MainActivity","stopwatcheslist: $stopWatches")
     }
 
     private fun hideKeyboard(context: Context) {

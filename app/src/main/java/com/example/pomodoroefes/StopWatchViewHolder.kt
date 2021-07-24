@@ -35,9 +35,17 @@ class StopWatchViewHolder(
 
     private fun initButtonsListeners(stopWatch: StopWatch) {
         binding.buttonStart.setOnClickListener {
+            stopWatch.timer?.cancel()
             if (stopWatch.isStarted) {
+                Log.i("StopWatchViewHolder","initbuttonlistener stop called")
+
+                //timer?.cancel()
+
+
                 listener.stop(stopWatch.id, stopWatch.currentMs)
             } else {
+
+                Log.i("StopWatchViewHolder","initbuttonlistener start called")
                 listener.start(stopWatch.id)
             }
         }
@@ -50,9 +58,9 @@ class StopWatchViewHolder(
 
         Log.i("stopwatchviewholder", "startTimer is called period = ${stopWatch.period}")
 
-        timer?.cancel()
-        timer = getCountDownTimer(stopWatch)
-        timer?.start()
+        stopWatch.timer?.cancel()
+        stopWatch.timer = getCountDownTimer(stopWatch)
+        stopWatch.timer?.start()
 
         binding.customViewTimer.setPeriod(stopWatch.period)
         binding.blinkingView.isInvisible = false
@@ -61,36 +69,45 @@ class StopWatchViewHolder(
     }
 
     private fun stopTimer(stopWatch: StopWatch) {
-binding.buttonStart.text = "START"
-        timer?.cancel()
+        Log.i("StopWatchViewHolder", "stopTimer is called")
+        binding.buttonStart.text = "START"
+        //
+        Log.i("StopWatchViewHolder", "$stopWatch")
+
+        stopWatch.timer?.cancel()
+
+
         binding.blinkingView.isInvisible = true
         (binding.blinkingView.background as? AnimationDrawable)?.stop()
     }
 
-    private fun getCountDownTimer(stopWatch: StopWatch): CountDownTimer {
+    private fun getCountDownTimer(stopWatch: StopWatch): CountDownTimer? {
         Log.i("Stopwatchviewholder", "getCountDownTimer is called")
-        return object : CountDownTimer(stopWatch.currentMs, UNIT_TEN_MS){
+            return object : CountDownTimer(stopWatch.currentMs, UNIT_TEN_MS) {
+                override fun onTick(millisUntilFinished: Long) {
+                    Log.i("StopWatchViewHolder", "getcountdowntimer is: ${millisUntilFinished / 1000}")
+                    binding.timerText.text = millisUntilFinished.displayTime()
+                    stopWatch.currentMs = millisUntilFinished
+                   // Log.i("StopWatchViewHolder", "stopwatch = : ${stopWatch}")
+                    binding.customViewTimer.setCurrent(millisUntilFinished)
+                }
 
-            override fun onTick(millisUntilFinished: Long) {
-                Log.i("StopWatchViewHolder", "getcountdowntimer is: ${millisUntilFinished*100}")
-                binding.timerText.text = millisUntilFinished.displayTime()
-                stopWatch.currentMs = millisUntilFinished
-                binding.customViewTimer.setCurrent(millisUntilFinished)
+                override fun onFinish() {
+                    Log.i(
+                        "Stopwatchviewholder",
+                        "on Finish is called, currentMs = ${stopWatch.currentMs}"
+                    )
+                    listener.finish(stopWatch.id)
+                    binding.customViewTimer.setCurrent(0L)
+                    // binding.customViewTimer.isVisible = false
+                    binding.timerText.text = stopWatch.currentMs.displayTime()
+                    stopTimer(stopWatch)
+                    binding.buttonStart.text = "START"
+                   // listener.stop(stopWatch.id,stopWatch.currentMs)
+
+                }
+
             }
-
-            override fun onFinish() {
-                listener.finish(stopWatch.id)
-                Log.i("Stopwatchviewholder", "on Finish is called, currentMs = ${stopWatch.currentMs}")
-                binding.customViewTimer.setCurrent(0L)
-               // binding.customViewTimer.isVisible = false
-                binding.timerText.text = stopWatch.currentMs.displayTime()
-                stopTimer(stopWatch)
-                binding.buttonStart.text = "START"
-                //listener.stop(stopWatch.id,stopWatch.currentMs)
-
-            }
-
-        }
     }
 
 }

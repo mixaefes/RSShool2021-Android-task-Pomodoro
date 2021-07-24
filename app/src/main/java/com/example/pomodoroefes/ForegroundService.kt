@@ -20,14 +20,14 @@ class ForegroundService : Service(){
 
     private val builder by lazy {
         NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Simple Timer")
+            .setContentTitle("Pomodoro")
             .setGroup("Timer")
             .setGroupSummary(false)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(getPendingIntent())
             .setSilent(true)
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setSmallIcon(R.drawable.pomodoro)
     }
 
     override fun onCreate() {

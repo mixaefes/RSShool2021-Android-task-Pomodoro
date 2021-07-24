@@ -1,5 +1,8 @@
 package com.example.pomodoroefes
 
+import android.os.CountDownTimer
+import android.util.Log
+
 
 const val START_TIME = "00:00:00"
 const val UNIT_TEN_MS = 1000L
@@ -29,3 +32,17 @@ fun displaySlot(count: Long): String {
         "0$count"
     }
 }
+
+/*
+ fun getCountDownTimer(stopWatch: StopWatch): CountDownTimer? {
+
+     return object : CountDownTimer(stopWatch.currentMs, UNIT_TEN_MS) {
+         override fun onTick(millisUntilFinished: Long) {
+         }
+
+         override fun onFinish() {
+
+
+         }
+     }
+ }*/
