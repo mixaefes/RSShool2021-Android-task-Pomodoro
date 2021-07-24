@@ -23,7 +23,11 @@ class StopWatchViewHolder(
 
         binding.customViewTimer.setPeriod(stopWatch.period)
         binding.customViewTimer.setCurrent(stopWatch.currentMs)
-        binding.buttonStart.text = "START"
+        if(stopWatch.currentMs>0L) {
+            binding.buttonStart.text = "START"
+            binding.buttonStart.isEnabled = true
+        }else{binding.buttonStart.text = "FINISH"
+            binding.buttonStart.isEnabled = false}
 
         if(stopWatch.isStarted){
             startTimer(stopWatch)
@@ -70,7 +74,9 @@ class StopWatchViewHolder(
 
     private fun stopTimer(stopWatch: StopWatch) {
         Log.i("StopWatchViewHolder", "stopTimer is called")
-        binding.buttonStart.text = "START"
+        if(stopWatch.currentMs>0L) {
+            binding.buttonStart.text = "START"
+        }
         //
         Log.i("StopWatchViewHolder", "$stopWatch")
 
@@ -102,7 +108,8 @@ class StopWatchViewHolder(
                     // binding.customViewTimer.isVisible = false
                     binding.timerText.text = stopWatch.currentMs.displayTime()
                     stopTimer(stopWatch)
-                    binding.buttonStart.text = "START"
+                    binding.buttonStart.text = "FINISH"
+                    binding.buttonStart.isEnabled = false
                    // listener.stop(stopWatch.id,stopWatch.currentMs)
 
                 }

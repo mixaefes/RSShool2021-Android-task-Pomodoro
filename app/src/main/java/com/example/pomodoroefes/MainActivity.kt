@@ -88,6 +88,11 @@ class MainActivity : AppCompatActivity(),LifecycleObserver, StopwatchListener  {
     }
 
     override fun finish(id: Int) {
+        stopWatches.forEach {
+            if(it.id==id){
+                it.currentMs = 0L
+            }
+        }
         Toast.makeText( this, "Timer is finished!!!",Toast.LENGTH_SHORT).show()
     }
 
