@@ -20,7 +20,6 @@ class StopWatchViewHolder(
 
     fun bind(stopWatch: StopWatch) {
         binding.timerText.text = stopWatch.currentMs.displayTime()
-
         binding.customViewTimer.setPeriod(stopWatch.period)
         binding.customViewTimer.setCurrent(stopWatch.currentMs)
         if(stopWatch.currentMs>0L) {

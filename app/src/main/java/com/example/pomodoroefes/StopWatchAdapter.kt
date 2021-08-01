@@ -33,4 +33,15 @@ class StopwatchAdapter(private val listener: StopwatchListener): ListAdapter<Sto
         }
     }
 
+    override fun onViewDetachedFromWindow(holder: StopWatchViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        try{
+        val stopWatch = getItem(holder.adapterPosition)
+        if(stopWatch.isStarted){
+            holder.setIsRecyclable(false)
+        }
+        }catch (e:IndexOutOfBoundsException){
+
+        }
+    }
 }
